@@ -1,0 +1,97 @@
+<div class="container" style="margin-top: 75px;">
+    <div class="col s12 m7">
+
+        <div class="row">
+            <div class="col">
+                <a class="btn-floating waves-effect green" (click)="onChangeMode('text')"><i class="material-icons">text_format</i></a>
+            </div>
+            <div class="col">
+                <a class="btn-floating waves-effect blue" (click)="onChangeMode('file')"><i class="material-icons">attach_file</i></a>
+            </div>
+        </div>
+
+        <h5 class="header"><b>doidimai</b></h5>
+
+        <div class="card horizontal" style="padding: 50px;">
+            <div class="card-image" style="margin-right: 50px;">
+                <img src="../../assets/operationblockchain.png" style="height: 250px; ">
+            </div>
+            <div class="card-stacked">
+                <form #transactionForm="ngForm">
+                    <div class="card-content">
+                        <p>Register your data on the Blockchain. Public. Decentralized. Free.</p>
+                    </div>
+                    <div *ngIf="textMode">
+                        <div class="card-content input-field col s12">
+                            <textarea type="text" id="data" name="data" [(ngModel)]="transaction.data" (ngModelChange)="calculateSHA256()" ngModel
+                                class="materialize-textarea" placeholder="Enter your data here..." required></textarea>
+                        </div>
+                        <div class="card-content" *ngIf="transaction.data?.length" style="margin-top: -70px">
+                            <label>SHA256: </label>
+                            <span>{{ dataDigest }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="fileMode">
+                        <div class="card-content">
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input type="file" id="file" name="file" (change)="onFileSelected($event)" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" [value]="fileName" placeholder="Choose a file to upload...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content" *ngIf="fileName.length" style="margin-top: -65px">
+                            <label>SHA256: </label>
+                            <span>{{ fileDigest }}</span>
+                        </div>
+                    </div>
+                    <div class="card-content" *ngIf="textMode" style="margin-top: -25px;">
+                        <button
+                            type="button"
+                            class="waves-effect waves-light btn"
+                            [disabled]="!transaction.data?.length"
+                            (click)="onSubmit(transactionForm, 'text')">
+                            Register
+                        </button>
+                        <button type="button" class="waves-effect waves-light btn" style="margin-left: 5px;"
+                            (click)="onReset(transactionForm, 'text')">
+                            Reset</button>
+                    </div>
+                    <div class="card-content" *ngIf="fileMode" style="margin-top: -25px;">
+                        <button
+                            type="button"
+                            class="waves-effect waves-light btn"
+                            [disabled]="!fileName.length"
+                            (click)="onSubmit(transactionForm, 'file')">
+                            Register
+                        </button>
+                        <button type="button" class="waves-effect waves-light btn" style="margin-left: 5px;"
+                            (click)="onReset(transactionForm, 'file')">
+                            Reset</button>
+                    </div>
+                    <div class="card-content" *ngIf="transactionOnTheWay">
+                        The transaction is being created...
+                    </div>
+                    <div class="card-content" *ngIf="txHash">
+                        <i class="material-icons" style="margin-right: -40px;">checked</i>
+                        <a href="https://ropsten.etherscan.io/tx/{{ txHash }}" target="_blank">{{ txHash }}</a>
+                    </div>
+                    <div class="card-content" *ngIf="existingTxs" style="margin-top: -25px;">
+                        <span *ngIf="txs.length == 1">This data was registered before on transaction:</span>
+                        <span *ngIf="txs.length > 1">This data was registered before on transactions:</span>
+                        <ul class="" *ngFor="let tx of txs">
+                            <li class="collection-item" style="margin-bottom: -15px;">
+                                <i class="material-icons" style="margin-right: 10px;">link</i>
+                                <a href="https://ropsten.etherscan.io/tx/{{ tx }}" target="_blank">{{ tx | slice:0:67 }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
