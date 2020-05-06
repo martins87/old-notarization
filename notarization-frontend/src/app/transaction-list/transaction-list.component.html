@@ -12,41 +12,59 @@
     </ul>
 </div> -->
 
-<div class="container transactions">
+<!-- <div class="container transactions">
     <div class="col s12 m7">
         <h5 class="header"><b>List of Transactions</b></h5>
         <div class="card-stacked">
             <div class="card horizontal">
                 <div class="card-content">
-                    <table class="transaction-list highlight">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Txn Hash</th>
-                                <th>Digest</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let transaction of transactionList">
-                                <td>{{ transaction.timestamp | date:'dd-MM-yyyy, h:mm:ss' }}</td>
-                                <td><a href="https://ropsten.etherscan.io/tx/{{ transaction.tx }}" target="_blank">{{ transaction.tx }}</a></td>
-                                <td>{{ transaction.data | slice:0:31 }}...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="card-content">
-                        <ul class="pagination">
-                            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                            <li class="active"><a href="#!">1</a></li>
-                            <li class="waves-effect"><a href="#!">2</a></li>
-                            <li class="waves-effect"><a href="#!">3</a></li>
-                            <li class="waves-effect"><a href="#!">4</a></li>
-                            <li class="waves-effect"><a href="#!">5</a></li>
-                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                          </ul>
-                    </div>
+                    
                </div>
             </div>
         </div>
     </div>
-</div>
+</div> -->
+
+<!-- <ul class="collapsible">
+    <li style="width: auto;">
+        <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+    <li style="width: auto;">
+        <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+</ul> -->
+
+<table class="transaction-list highlight">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Txn Hash</th>
+            <th>Digest</th>
+        </tr>
+    </thead>
+    <tbody style="padding: 30px;">
+        <tr *ngFor="let transaction of transactionList">
+            <td>{{ transaction.timestamp | date:'dd-MM-yyyy, h:mm:ss' }}</td>
+            <td><a href="https://ropsten.etherscan.io/tx/{{ transaction.tx }}" target="_blank">{{ transaction.tx }}</a></td>
+            <td>{{ transaction.data | slice:0:31 }}...</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- <div class="row">
+    <div class="col text-center">
+        <div class="card-content">
+            <ul class="pagination">
+                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                <li class="active"><a href="#!">1</a></li>
+                <li class="waves-effect"><a href="#!">2</a></li>
+                <li class="waves-effect"><a href="#!">3</a></li>
+                <li class="waves-effect"><a href="#!">4</a></li>
+                <li class="waves-effect"><a href="#!">5</a></li>
+                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            </ul>
+        </div>
+    </div>
+</div> -->

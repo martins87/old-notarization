@@ -14,22 +14,25 @@ import { digest } from '@angular/compiler/src/i18n/digest';
 })
 export class TransactionComponent implements OnInit {
 
+  transactionList: Transaction[];
   transaction: Transaction;
   txHash: string;
   transactionOnTheWay: boolean;
   existingTxs: boolean;
   txs: string[];
 
-  dataDigest: string;
   textMode: boolean;
-  fileDigest: string;
   fileMode: boolean;
+  listMode: boolean;
+  dataDigest: string;
+  fileDigest: string;
   fileName: string;
   file: File;
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    this.refreshTransactionList();
     this.transaction = new Transaction();
     this.transaction.data = '';
     this.transactionOnTheWay = false;
@@ -39,6 +42,16 @@ export class TransactionComponent implements OnInit {
     this.fileDigest = '';
     this.fileName = '';
     this.textMode = true;
+  }
+
+  refreshTransactionList() {
+    this.transactionService.getTransactionList().subscribe((res) => {
+      this.transactionList = res
+        .filter(item => item.tx)
+        .sort((a, b) => {
+          return a.timestamp < b.timestamp ? 1 : -1;
+        }) as Transaction[];
+    });
   }
 
   onSubmit(form: NgForm, mode: string) {
@@ -111,6 +124,7 @@ export class TransactionComponent implements OnInit {
   onChangeMode(mode: string) {
     this.textMode = mode === 'text' ? true : false;
     this.fileMode = mode === 'file' ? true : false;
+    this.listMode = mode === 'list' ? true : false;
   }
 
   calculateSHA256() {

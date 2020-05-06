@@ -8,14 +8,17 @@
             <div class="col">
                 <a class="btn-floating waves-effect blue" (click)="onChangeMode('file')"><i class="material-icons">attach_file</i></a>
             </div>
+            <div class="col">
+                <a class="btn-floating waves-effect orange" (click)="onChangeMode('list')"><i class="material-icons">playlist_add_check</i></a>
+            </div>
         </div>
 
-        <h5 class="header"><b>doidimai</b></h5>
+        <!-- <h5 class="header"><b>doidimai</b></h5> -->
 
-        <div class="card horizontal" style="padding: 50px;">
-            <div class="card-image" style="margin-right: 50px;">
-                <img src="../../assets/operationblockchain.png" style="height: 250px; ">
-            </div>
+        <div class="card horizontal" *ngIf="!listMode" style="padding: 50px;">
+            <!-- <div class="card-image" style="margin-right: 50px;">
+                <img src="https://www.operationblockchain.org/notarization/assets/operationblockchain.png" style="height: 250px; ">
+            </div> -->
             <div class="card-stacked">
                 <form #transactionForm="ngForm">
                     <div class="card-content">
@@ -91,6 +94,11 @@
                     </div>
                 </form>
             </div>
+        </div>
+
+
+        <div class="card horizontal" *ngIf="listMode" >
+            <app-transaction-list [transactionList]="transactionList"></app-transaction-list>
         </div>
 
     </div>

@@ -82,11 +82,6 @@ router.post('/', async (req, res) => {
     })
 });
 
-router.post('/aaa', (req, res) => {
-    console.log('chegou aqui');
-    console.log(req.files);
-});
-
 router.put('/:id', (req, res) => {
     const id = req.params.id;
     if (!ObjectId.isValid(id)) {

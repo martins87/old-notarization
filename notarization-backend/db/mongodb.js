@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-mongoose.connect('mongodb://localhost:27017/blockchain-db', { useNewUrlParser: true }, (err) => {
+// var dbUrl = process.env.LOCAL_DB_URL;
+var dbUrl = process.env.DB_URL;
+
+mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
     if (!err) {
         console.log('Successfully connected to blockchain-db!');
     } else {

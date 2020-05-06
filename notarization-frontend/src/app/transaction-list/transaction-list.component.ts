@@ -12,6 +12,10 @@ export class TransactionListComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    // $(document).ready(function() {
+    //   $('.collapsible').collapsible({});
+    // });
+  }
 
 }

@@ -1,6 +1,6 @@
 const { ethers, utils } = require('ethers');
 const axios = require('axios');
-require('dotenv').config()
+require('dotenv').config();
 
 const provider = ethers.getDefaultProvider('ropsten');
 const wallet = new ethers.Wallet(process.env.WALLET_KEY, provider);

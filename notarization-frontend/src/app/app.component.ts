@@ -11,21 +11,21 @@ import { Transaction } from './shared/transaction.model';
 export class AppComponent implements OnInit {
 
   title = 'NotarizationApp';
-  transactionList: Transaction[];
+  // transactionList: Transaction[];
 
   constructor(private transactionService: TransactionService) { }
 
   ngOnInit() {
-    this.refreshTransactionList();
+    // this.refreshTransactionList();
   }
 
-  refreshTransactionList() {
-    this.transactionService.getTransactionList().subscribe((res) => {
-      this.transactionList = res
-        .filter(item => item.tx)
-        .sort((a, b) => {
-          return a.timestamp < b.timestamp ? 1 : -1;
-        }) as Transaction[];
-    });
-  }
+  // refreshTransactionList() {
+  //   this.transactionService.getTransactionList().subscribe((res) => {
+  //     this.transactionList = res
+  //       .filter(item => item.tx)
+  //       .sort((a, b) => {
+  //         return a.timestamp < b.timestamp ? 1 : -1;
+  //       }) as Transaction[];
+  //   });
+  // }
 }

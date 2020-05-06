@@ -5,7 +5,7 @@ const cors = require('cors');
 const { mongoose } = require('./db/mongodb.js');
 var transactionController = require('./controllers/transactionController.js');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.json());
