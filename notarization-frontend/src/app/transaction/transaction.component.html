@@ -26,10 +26,10 @@
                     </div>
                     <div *ngIf="textMode">
                         <div class="card-content input-field col s12">
-                            <textarea type="text" id="data" name="data" [(ngModel)]="transaction.data" (ngModelChange)="calculateSHA256()" ngModel
+                            <textarea type="text" id="data" name="data" [(ngModel)]="data" (ngModelChange)="calculateSHA256()" ngModel
                                 class="materialize-textarea" placeholder="Enter your data here..." required></textarea>
                         </div>
-                        <div class="card-content" *ngIf="transaction.data?.length" style="margin-top: -70px">
+                        <div class="card-content" *ngIf="data?.length" style="margin-top: -70px">
                             <label>SHA256: </label>
                             <span>{{ dataDigest }}</span>
                         </div>
@@ -55,7 +55,7 @@
                         <button
                             type="button"
                             class="waves-effect waves-light btn"
-                            [disabled]="!transaction.data?.length"
+                            [disabled]="!data?.length"
                             (click)="onSubmit(transactionForm, 'text')">
                             Register
                         </button>
@@ -82,9 +82,19 @@
                         <i class="material-icons" style="margin-right: -40px;">checked</i>
                         <a href="https://ropsten.etherscan.io/tx/{{ txHash }}" target="_blank">{{ txHash }}</a>
                     </div>
-                    <div class="card-content" *ngIf="existingTxs" style="margin-top: -25px;">
+                    <div class="card-content" *ngIf="textMode && dataCheck && existingTxs" style="margin-top: -25px;">
                         <span *ngIf="txs.length == 1">This data was registered before on transaction:</span>
                         <span *ngIf="txs.length > 1">This data was registered before on transactions:</span>
+                        <ul class="" *ngFor="let tx of txs">
+                            <li class="collection-item" style="margin-bottom: -15px;">
+                                <i class="material-icons" style="margin-right: 10px;">link</i>
+                                <a href="https://ropsten.etherscan.io/tx/{{ tx }}" target="_blank">{{ tx | slice:0:67 }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-content" *ngIf="fileMode && fileCheck && existingTxs" style="margin-top: -25px;">
+                        <span *ngIf="txs.length == 1">This file was registered before on transaction:</span>
+                        <span *ngIf="txs.length > 1">This file was registered before on transactions:</span>
                         <ul class="" *ngFor="let tx of txs">
                             <li class="collection-item" style="margin-bottom: -15px;">
                                 <i class="material-icons" style="margin-right: 10px;">link</i>

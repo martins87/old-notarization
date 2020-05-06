@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Transaction } from './transaction.model';
-import { NgForm } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,8 @@ import { NgForm } from '@angular/forms';
 export class TransactionService {
 
   transactions: Transaction[];
-  readonly baseURL = 'http://localhost:3000/transactions';
+  // readonly baseURL = 'http://localhost:3000/transactions';
+  readonly baseURL = 'https://notarization-backend.herokuapp.com/transactions';
 
   constructor(private http: HttpClient) { }
 
@@ -34,10 +34,6 @@ export class TransactionService {
     return this.http.get<string[]>(this.baseURL + `/check/${data}`, {
       params: { dataToCheck: data }
     });
-  }
-
-  addFile() {
-    
   }
 
 }

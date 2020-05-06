@@ -48,7 +48,7 @@
         <tr *ngFor="let transaction of transactionList">
             <td>{{ transaction.timestamp | date:'dd-MM-yyyy, h:mm:ss' }}</td>
             <td><a href="https://ropsten.etherscan.io/tx/{{ transaction.tx }}" target="_blank">{{ transaction.tx }}</a></td>
-            <td>{{ transaction.data | slice:0:31 }}...</td>
+            <td>{{ transaction.digest | slice:0:31 }}...</td>
         </tr>
     </tbody>
 </table>

@@ -15,7 +15,6 @@ import { digest } from '@angular/compiler/src/i18n/digest';
 export class TransactionComponent implements OnInit {
 
   transactionList: Transaction[];
-  transaction: Transaction;
   txHash: string;
   transactionOnTheWay: boolean;
   existingTxs: boolean;
@@ -24,6 +23,9 @@ export class TransactionComponent implements OnInit {
   textMode: boolean;
   fileMode: boolean;
   listMode: boolean;
+  dataCheck: boolean;
+  fileCheck: boolean;
+  data: string;
   dataDigest: string;
   fileDigest: string;
   fileName: string;
@@ -33,8 +35,7 @@ export class TransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshTransactionList();
-    this.transaction = new Transaction();
-    this.transaction.data = '';
+    this.data = '';
     this.transactionOnTheWay = false;
     this.existingTxs = false;
     this.txs = [];
@@ -60,23 +61,40 @@ export class TransactionComponent implements OnInit {
     this.transactionService.isDataRegistered(digestToRegister).subscribe((txArray) => {
       // always returns an array, index 0 being null or not
       if (txArray[0]) {
-        console.log('Data already registered. Transactions:', txArray);
+        console.log('(Angular) Data already registered:', txArray);
+        this.dataCheck = mode === 'text' ? true : false;
+        this.fileCheck = mode === 'file' ? true : false;
         this.existingTxs = true;
         this.txs = txArray;
       } else {
+        this.dataCheck = false;
+        this.fileCheck = false;
+
         let transaction = new Transaction();
-        transaction.data = digestToRegister;
+        if (mode === 'text') {
+          if (this.data.length > 66) {
+            transaction.data = this.data.substring(0, 66) + '...';
+          } else {
+            transaction.data = this.data;
+          }
+        } else if (mode === 'file') {
+          transaction.data = this.fileName;
+        }
+        transaction.digest = digestToRegister;
         transaction.timestamp = String(Date.now());
         transaction.tx = '';
+        console.log('(Angular) New transaction:', transaction);
 
         this.transactionOnTheWay = true;
         form.reset();
 
         this.transactionService.addTransaction(transaction).subscribe((res) => {
           // TODO: tratar erro ao registrar
-          console.log('Transaction added:', res);
+          console.log('(Angular) Transaction added to Ethereum Blockchain:', res);
           this.transactionOnTheWay = false;
           this.txHash = res.tx;
+        }, err => {
+          console.error('(Angular) Error on adding transaction:', err)
         });
 
         this.existingTxs = false;
@@ -84,20 +102,19 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  onDelete() {
-    this.transactionService.deleteTransaction(this.transaction._id).subscribe((res) => {
-      console.log('Return of delete request:', res);
-    });
-  }
+  // onDelete() {
+  //   this.transactionService.deleteTransaction(this.transaction._id).subscribe((res) => {
+  //     console.log('Return of delete request:', res);
+  //   });
+  // }
 
   onReset(transactionForm: NgForm, mode: string) {
-    transactionForm.reset();
-    this.transaction = new Transaction();
     if (mode === 'text') {
-      this.transaction.data = '';
-    }
-    if (mode === 'file') {
+      this.data = '';
+    } else if (mode === 'file') {
+      this.file = null;
       this.fileName = '';
+      this.fileDigest = '';
     }
     this.existingTxs = false;
     this.txs = [];
@@ -128,8 +145,8 @@ export class TransactionComponent implements OnInit {
   }
 
   calculateSHA256() {
-    if (this.transaction.data) {
-      this.dataDigest = sha256(this.transaction.data);
+    if (this.data) {
+      this.dataDigest = sha256(this.data);
     }
   }
 
