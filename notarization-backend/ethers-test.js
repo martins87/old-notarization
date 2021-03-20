@@ -12,7 +12,7 @@ provider.getTransactionCount(WALLET_ADDRESS).then((transactionCount) => {
 });
 
 const main = async () => {
-    let data = '.env test';
+    let data = 'Data to register';
     let gasPrices = await getCurrentGasPrices();
 
     let txObject = {
@@ -45,7 +45,6 @@ const getCurrentGasPrices = async () => {
         medium: response.data.average/10,
         high: response.data.fast/10
     }
-
     return prices;
 }
 

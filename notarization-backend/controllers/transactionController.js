@@ -1,18 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const sha256 = require('sha256');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const Transaction = require('../models/transaction');
 const ethereum = require('../ethereum');
 
 router.get('/', (req, res) => {
-
     Transaction.find((err, docs) => {
         if (!err) {
             res.send(docs);
         } else {
-            console.log('(Nodejs) Error on retrieving transactions: ' + JSON.stringify(err, undefined, 2));
+            console.log('[Nodejs] Error on retrieving transactions: ' + JSON.stringify(err, undefined, 2));
         }
     });
 });
@@ -27,7 +25,7 @@ router.get('/:id', (req, res) => {
         if (!err) {
             res.send(doc);
         } else {
-            console.log('(Nodejs) Error on retrieving transaction: ' + JSON.stringify(err, undefined, 2));
+            console.log('[Nodejs] Error on retrieving transaction: ' + JSON.stringify(err, undefined, 2));
             res.send(JSON.stringify(err, undefined, 2));
         }
     });
@@ -35,7 +33,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/check/:data', (req, res) => {
     const digestToCheck = req.params.data;
-    console.log('(Nodejs) To check:', { digest: digestToCheck });
+    console.log('[Nodejs] To check:', { digest: digestToCheck });
 
     // Transaction.find({ data: digestToCheck }, (err, doc) => {
     Transaction.find({ digest: digestToCheck }, (err, doc) => {
@@ -43,14 +41,14 @@ router.get('/check/:data', (req, res) => {
             if (doc) {
                 // map returns item.tx
                 let txArray = doc.map(item => item.tx);
-                console.log('(Nodejs) Found on transaction(s)', txArray);
+                console.log('[Nodejs] Found on transaction(s)', txArray);
                 res.send(txArray);
             } else {
-                console.log('(Nodejs) doc not found:', doc);
+                console.log('[Nodejs] doc not found:', doc);
                 res.send(false);
             }
         } else {
-            console.log('(Nodejs) Error searching document:', JSON.stringify(err, undefined, 2));
+            console.log('[Nodejs] Error searching document:', JSON.stringify(err, undefined, 2));
             res.send(JSON.stringify(err, undefined, 2));
         }
     });
@@ -58,14 +56,12 @@ router.get('/check/:data', (req, res) => {
 
 router.post('/', async (req, res) => {
     // Register the data on ropsten test net
-    console.log('(Nodejs) req.body:', req.body);
+    console.log('[Nodejs] req.body:', req.body);
     
-    // let digest = req.body.data;
     let digest = req.body.digest;
-    // let digest = sha256(req.body.data);
     let txHash = await ethereum.register(digest);
 
-    console.log('(Nodejs) tx hash:', txHash);
+    console.log('[Nodejs] tx hash:', txHash);
 
     const transaction = new Transaction({
         // address: '', // get from .env
@@ -79,7 +75,7 @@ router.post('/', async (req, res) => {
         if (!err) {
             res.send(doc);
         } else {
-            console.log('(Nodejs) Error on saving the document: ' + JSON.stringify(err, undefined, 2));
+            console.log('[Nodejs] Error on saving the document: ' + JSON.stringify(err, undefined, 2));
             res.send(JSON.stringify(err, undefined, 2));
         }
     })
